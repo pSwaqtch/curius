@@ -1,0 +1,49 @@
+{
+   "action": {
+      "default_icon": "dist/extension/static/icon.png",
+      "default_popup": "extension.html"
+   },
+   "background": {
+      "service_worker": "service_worker.js"
+   },
+   "browser_specific_settings": {
+      "gecko": {
+         "id": "hi@curius.app"
+      }
+   },
+   "chrome_url_overrides": {
+      "newtab": "newtab.html"
+   },
+   "commands": {
+      "_execute_action": {
+         "suggested_key": {
+            "default": "Alt+S"
+         }
+      },
+      "save-link": {
+         "description": "Saves the link",
+         "suggested_key": {
+            "default": "Ctrl+Shift+S"
+         }
+      }
+   },
+   "content_scripts": [ {
+      "css": [ "dist/extension/static/content.css" ],
+      "exclude_matches": [ "http://localhost/*", "*://www.messenger.com/*", "*://chat.openai.com/*", "*://calendar.google.com/*" ],
+      "js": [ "dist/helper.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_end"
+   } ],
+   "content_security_policy": {
+   },
+   "description": "Learn together",
+   "host_permissions": [ "http://*/", "https://*/" ],
+   "icons": {
+      "128": "dist/extension/static/saved.png"
+   },
+   "manifest_version": 3,
+   "name": "Curius (dark)",
+   "options_page": "options.html",
+   "permissions": [ "contextMenus", "tabs", "storage", "cookies" ],
+   "version": "0.2.8.45"
+}

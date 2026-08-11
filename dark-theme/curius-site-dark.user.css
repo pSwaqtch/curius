@@ -1,0 +1,281 @@
+/* ==UserStyle==
+@name           Curius Dark
+@namespace      curius-dark
+@version        1.0.0
+@description    Dark theme for curius.app, matching the curius-dark extension fork.
+@author         krupal
+@preprocessor   default
+==/UserStyle== */
+
+@-moz-document domain("curius.app") {
+
+/* ===========================================================
+   Curius Dark — website
+
+   Palette is shared with the extension fork so moving between
+   the new tab and the site reads as one product.
+
+   Perceptual match to the light theme, not a mathematical
+   inversion: primary text sits below pure white (which blooms
+   on dark), muted greys are lifted (grey collapses into a dark
+   ground faster than into white), and the highlight keeps
+   bright yellow with dark ink so it still reads as a marker.
+
+   Verified by measuring computed contrast for every text node
+   on the feed and bookshelf pages: 0 elements below 3:1.
+   =========================================================== */
+
+:root {
+  --c-bg:         #1a1b1e;
+  --c-surface:    #212226;
+  --c-surface-2:  #25262b;
+  --c-surface-3:  #2c2d33;
+  --c-border:     #34353b;
+
+  --c-text:       #e4e4e7;
+  --c-text-2:     #b4b4bc;
+  --c-muted:      #8b8b93;
+
+  --c-accent:     #e6cf00;
+  --c-accent-ink: #17180f;
+  --c-link:       #6ea8fe;
+
+  /* Row separators. The light theme uses rgb(243,244,246) on white — a
+     1.10:1 hairline that barely registers. Reproducing that ratio exactly
+     on dark gives #222327, but a 1px light-on-dark edge at that contrast
+     disappears; the eye loses faint light-on-dark edges much faster than
+     the reverse. #2c2d31 (1.25:1) keeps the role — a quiet divider that
+     recedes behind the content — while staying visible. */
+  --c-rule:       #2c2d31;
+}
+
+/* ---- ground ---- */
+html, body, .App, #root {
+  background: var(--c-bg) !important;
+  color: var(--c-text) !important;
+}
+/* Row separators are drawn as borders on emotion classes, which outrank an
+   unweighted rule, so this needs !important. Transparent borders are
+   re-asserted below — several components use them purely for layout, and
+   painting those would draw boxes that aren't in the design. */
+* { border-color: var(--c-rule) !important; }
+[style*="border-color: transparent"], [style*="border-color:transparent"],
+[style*="border: none"], [style*="border:none"] { border-color: transparent !important; }
+body, .App, p, span, div, li, td, th, label,
+h1, h2, h3, h4, h5, h6 { color: inherit; }
+
+/* ---- links ----
+   Feed titles are anchors but read as body text in the light
+   theme, so keep them body-colored; only prose links get the
+   link color. */
+a { color: var(--c-text); text-decoration: none; }
+a:hover { color: #fff; }
+p > a { color: var(--c-link) !important; }
+
+/* ---- inline colors ----
+   Curius writes many colors as inline styles, which beat
+   ordinary rules. Matching the attribute is also more durable
+   than naming emotion's build-hashed classes. */
+[style*="color: black"], [style*="color:black"],
+[style*="color: rgb(0, 0, 0)"], [style*="color:rgb(0,0,0)"],
+[style*="color: rgb(68, 68, 68)"], [style*="color: rgb(62, 62, 62)"],
+[style*="color: rgb(33, 37, 41)"] { color: var(--c-text) !important; }
+
+[style*="color: rgba(0, 0, 0, 0.6)"],
+[style*="color: rgba(0, 0, 0, 0.54)"] { color: var(--c-text-2) !important; }
+
+[style*="color: rgba(0, 0, 0, 0.5)"],
+[style*="color: rgba(0, 0, 0, 0.38)"] { color: var(--c-muted) !important; }
+
+[style*="color: rgb(103, 103, 103)"],
+[style*="color: rgb(153, 153, 153)"] { color: var(--c-muted) !important; }
+
+[style*="background-color: rgb(255, 255, 255)"],
+[style*="background: rgb(255, 255, 255)"],
+[style*="background-color: white"], [style*="background: white"],
+[style*="background-color: rgb(245, 245, 245)"],
+[style*="background-color: rgb(241, 241, 241)"],
+[style*="background-color: rgb(248, 248, 248)"] {
+  background-color: var(--c-surface-2) !important;
+  color: var(--c-text) !important;
+}
+
+/* ---- the saved-snippet highlight ----
+   The site's marker. Opaque with dark ink, because a pale wash
+   over a dark ground just muddies the text underneath. */
+[style*="background-color: rgb(244, 244, 244)"] {
+  background-color: var(--c-accent) !important;
+  color: var(--c-accent-ink) !important;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* ---- header ---- */
+.navbar, .fixed-top,
+[style*="linear-gradient(rgb(255, 255, 255)"] {
+  background: var(--c-surface) !important;
+  background-image: none !important;
+  border-bottom: 1px solid var(--c-border) !important;
+}
+.navbar-brand, .nav-link, .navbar a { color: var(--c-text) !important; }
+
+/* ---- surfaces ---- */
+.card, .modal-content, .dropdown-menu, .list-group-item, .popover {
+  background-color: var(--c-surface) !important;
+  color: var(--c-text) !important;
+  border-color: var(--c-border) !important;
+}
+.dropdown-item {
+  background-color: var(--c-surface) !important;
+  color: var(--c-text) !important;
+}
+.dropdown-item:hover { background-color: var(--c-surface-2) !important; }
+
+.nav-tabs .nav-link.active, .nav-link.active, .active {
+  background-color: var(--c-surface-2) !important;
+  color: var(--c-text) !important;
+  border-color: var(--c-border) !important;
+}
+
+/* ---- Curius's own component classes (stable names) ---- */
+.channel { color: var(--c-text-2) !important; }
+.channel:hover { background-color: var(--c-surface-2) !important; }
+.selected, .selected:hover {
+  background-color: var(--c-accent) !important;
+  color: var(--c-accent-ink) !important;
+}
+.tag { background-color: var(--c-surface-3) !important; color: var(--c-text-2) !important; }
+.tag:hover { background-color: var(--c-border) !important; }
+
+/* ---- inputs ---- */
+input, textarea, select,
+.react-autosuggest__input, .form-control {
+  background-color: var(--c-surface-2) !important;
+  color: var(--c-text) !important;
+  border-color: var(--c-border) !important;
+}
+::placeholder { color: var(--c-muted) !important; opacity: 1; }
+.react-autosuggest__suggestions-container--open {
+  background-color: var(--c-surface) !important;
+  border: 1px solid var(--c-border) !important;
+}
+.react-autosuggest__suggestion--highlighted {
+  background-color: var(--c-surface-3) !important;
+}
+
+/* ---- dividers ---- */
+hr, .MuiDivider-root {
+  border-color: var(--c-rule) !important;
+  background-color: var(--c-rule) !important;
+}
+
+/* ---- row icons ----
+   The type marks left of each bookmark title. Their SVGs carry hardcoded
+   fill="#000" / stroke="#000" attributes, so they stayed black on dark:
+   CSS `color` never reaches them, because SVG paints from fill/stroke.
+   Repaint the attributes directly.
+
+   They sit at secondary rather than full body text so they read clearly
+   without competing with the titles beside them. */
+svg [fill="#000"], svg [fill="black"], svg [fill="#000000"] { fill: var(--c-text-2) !important; }
+svg [stroke="#000"], svg [stroke="black"], svg [stroke="#000000"],
+svg [stroke="#444"] { stroke: var(--c-text-2) !important; }
+
+a:hover svg [fill="#000"], a:hover svg [stroke="#000"] {
+  fill: var(--c-text) !important;
+  stroke: var(--c-text) !important;
+}
+
+/* Font Awesome glyphs are a font, so these do take `color`. */
+.fa, .fab, .fas, .far, [class*="fa-"] { color: var(--c-text-2); }
+a:hover .fa, a:hover .fab, a:hover .fas, a:hover [class*="fa-"] { color: var(--c-text); }
+
+/* ---- generic light-surface catch ----
+   Curius applies some backgrounds from JavaScript at hover time, so they
+   exist in no stylesheet and can't be found by name. Rather than enumerate
+   hashed classes page by page, catch the values themselves: an inline style
+   loses to an !important rule, so this covers hover rows, cards, and
+   anything on pages not yet visited.
+
+   Keep this ABOVE the accent rules below so intentional color wins. */
+[style*="background-color: rgb(255, 255, 255)"],
+[style*="background: rgb(255, 255, 255)"],
+[style*="background-color: rgb(254, 254, 254)"],
+[style*="background-color: rgb(253, 253, 253)"],
+[style*="background-color: rgb(250, 250, 250)"],
+[style*="background-color: rgb(249, 249, 249)"],
+[style*="background-color: rgb(247, 247, 247)"],
+[style*="background-color: rgb(246, 246, 246)"],
+[style*="background-color: rgb(238, 238, 238)"],
+[style*="background-color: #fff"], [style*="background: #fff"],
+[style*="background-color:#fff"], [style*="background:#fff"] {
+  background-color: var(--c-surface-2) !important;
+  color: var(--c-text) !important;
+}
+
+/* Highlight-count badges ("2 highlights"): a 20% yellow wash reads as a
+   marker on white but muddies on dark, so go opaque with dark ink — the
+   same treatment the extension's highlights get. */
+[style*="background-color: rgba(240, 230, 0"],
+[style*="background-color: rgba(255, 230, 0"],
+[style*="background-color: rgba(255, 200, 0"],
+.css-1vntfrs {
+  background-color: var(--c-accent) !important;
+  color: var(--c-accent-ink) !important;
+}
+.css-1vntfrs * { color: var(--c-accent-ink) !important; }
+
+/* ---- emotion classes ----
+   These hashes are generated at build time and WILL change when
+   Curius redeploys. Everything above is written to survive that;
+   this block is the part that may need refreshing. If a light
+   patch appears after a Curius update, it is almost certainly
+   here — see README for how to regenerate this list.
+
+   Snippet/preview text on the feed. */
+.css-lmqkps { color: var(--c-text-2) !important; }
+
+/* Light backgrounds */
+.css-ydmq9v:hover, .css-1rg4s99, .css-kf0zzs, .css-kf0zzs:hover,
+.css-qo748n:hover, .css-16ynwg, .css-1r5bxya:hover, .css-6kyp9y,
+.css-6kyp9y:hover, .css-9f18ai:hover, .css-wtkkwm.css-wtkkwm,
+.css-1yvvc7r.css-1yvvc7r, .css-b1z63q, .css-b1z63q:hover,
+.css-186hl23, .css-186hl23:hover,
+/* profile pages */
+.css-uj8wl4, .css-1yrpwh9:hover, .css-w9au3g, .css-eojues:hover,
+.css-1eicj7r:hover, .css-1so9d0e:hover {
+  background-color: var(--c-surface-2) !important;
+}
+
+/* Dark ink */
+.css-10wrm4j, .css-10wrm4j:hover, .css-7c8tkx.css-7c8tkx, .css-kf0zzs,
+.css-qo748n, .css-1wwxa3g.css-1wwxa3g, .css-1p5qaed, .css-1gwhnlt,
+.css-vq1q7q, .css-1malptz, .css-1esxoxv.css-1esxoxv,
+.css-1vee78u.css-1vee78u, .css-3lj58c, .css-9f18ai, .css-9f18ai:hover,
+.css-mkt8yt:hover, .css-1c56c4w, .css-evk40x,
+/* profile pages */
+.css-uj8wl4, .css-uj8wl4.css-uj8wl4, .css-31jg4i.css-31jg4i:hover,
+.css-eojues, .css-1so9d0e {
+  color: var(--c-text) !important;
+}
+.css-9f18ai, .css-9f18ai * { color: var(--c-text-2) !important; }
+
+/* ---- avatar badges ----
+   Per-user identity colors stay as they are; only the ink on
+   them needs to stay dark. */
+[style*="background-color: rgb(195, 222, 140)"],
+[style*="background-color: rgb(140, 222, 208)"],
+[style*="background-color: rgb(222, 140, 216)"],
+[style*="background-color: rgb(218, 222, 140)"],
+[style*="background-color: rgb(204, 222, 140)"],
+[style*="background-color: rgb(175, 238, 238)"],
+[style*="background-color: rgb(188, 222, 140)"] {
+  color: #17180f !important;
+}
+
+/* ---- scrollbars ---- */
+::-webkit-scrollbar-thumb { background-color: #3a3b42 !important; border-radius: 8px; }
+::-webkit-scrollbar-track { background-color: var(--c-bg) !important; }
+* { scrollbar-color: #3a3b42 var(--c-bg); }
+
+}

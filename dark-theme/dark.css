@@ -1,0 +1,182 @@
+/* ===========================================================
+   Curius Dark Theme
+   Perceptual match to the stock light theme, not a math inversion.
+
+   Light theme is Bootstrap 4 greys + a small Curius layer
+   (#ffe600 accent, #f8f8f8/#f5f5f5/#eee surfaces, #aaa muted,
+   #545454 channel labels).
+
+   Choices that deviate from strict ratio-mirroring, on purpose:
+   - Body text is #e4e4e7, not #fff. Pure white on dark blooms and
+     reads heavier than #212529 does on white.
+   - Muted text is lifted (#8b8b93 -> reads ~5.2:1) because grey
+     collapses into a dark ground much faster than into a white one.
+   - Borders get more relative lift than the math implies; a 1px
+     hairline that works on white disappears entirely on dark.
+   - #ffe600 -> #e6cf00. Same hue, lower luminance. As a *background*
+     behind black text it stays legible, but full-strength yellow on
+     a dark surface glares.
+   =========================================================== */
+
+:root {
+  --c-bg:            #1a1b1e;  /* page ground */
+  --c-surface:       #212226;  /* cards, panels */
+  --c-surface-2:     #25262b;  /* raised / hover */
+  --c-surface-3:     #2c2d33;  /* pressed, tags */
+  --c-border:        #34353b;  /* hairlines */
+  --c-border-strong: #43444c;
+
+  --c-text:          #e4e4e7;  /* primary  (~12.6:1 on bg) */
+  --c-text-2:        #b4b4bc;  /* secondary */
+  --c-muted:         #8b8b93;  /* was #aaa  (~5.2:1) */
+  --c-faint:         #6b6b73;
+
+  --c-accent:        #e6cf00;  /* was #ffe600 */
+  --c-accent-ink:    #17180f;  /* text on accent */
+  --c-link:          #6ea8fe;  /* was #007bff, lifted for dark */
+}
+
+/* ---- base ---- */
+html, body {
+  background-color: var(--c-bg) !important;
+  color: var(--c-text);
+}
+#app { background-color: var(--c-bg); color: var(--c-text); }
+
+/* Bootstrap paints these on white grounds; retarget to dark. */
+.bg-white, .bg-light { background-color: var(--c-surface) !important; }
+.text-dark  { color: var(--c-text) !important; }
+.text-muted { color: var(--c-muted) !important; }
+.text-black-50 { color: var(--c-muted) !important; }
+
+.card, .modal-content, .popover, .toast {
+  background-color: var(--c-surface);
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+.card-header, .card-footer, .modal-header, .modal-footer {
+  background-color: var(--c-surface-2);
+  border-color: var(--c-border);
+}
+
+hr, .border, .border-top, .border-bottom, .border-left, .border-right {
+  border-color: var(--c-border) !important;
+}
+
+/* ---- Curius: channels (sidebar nav) ---- */
+.channel { color: var(--c-text-2); }          /* was #545454 */
+.channel:hover { background-color: var(--c-surface-2); }
+
+.selected, .selected:hover {
+  background-color: var(--c-accent);
+  color: var(--c-accent-ink);
+}
+
+/* ---- Curius: tags ---- */
+.tag {
+  background-color: var(--c-surface-3);        /* was #f5f5f5 */
+  color: var(--c-muted);
+}
+.tag:hover { background-color: var(--c-border); }
+
+/* ---- Curius: grey buttons ---- */
+.grey-button { color: var(--c-muted); }
+.grey-button:hover { background-color: var(--c-surface-2); }
+
+/* ---- Curius: offset button (yellow shadow treatment) ---- */
+.offset-button::before {
+  color: var(--c-text) !important;
+  border-color: var(--c-border-strong) !important;
+}
+.offset-button::after { background-color: var(--c-accent); }
+
+/* ---- search / autosuggest ---- */
+.react-autosuggest__input {
+  background-color: var(--c-surface-2);
+  color: var(--c-text);
+}
+.react-autosuggest__input::placeholder { color: var(--c-faint); }
+.react-autosuggest__suggestions-container--open {
+  background-color: var(--c-surface);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+}
+.react-autosuggest__suggestion--highlighted {
+  background-color: var(--c-surface-3);        /* was #edeef9 */
+}
+
+/* ---- dropdowns (source uses !important, so we must too) ---- */
+.dropdown-menu {
+  background-color: var(--c-surface) !important;
+  border-color: var(--c-border) !important;
+  color: var(--c-text) !important;
+}
+.dropdown-item {
+  background-color: var(--c-surface) !important;
+  color: var(--c-text) !important;
+}
+.dropdown-item:hover, .dropdown-item:focus {
+  background-color: var(--c-surface-2) !important;
+  color: var(--c-text) !important;
+}
+.dropdown-divider { border-color: var(--c-border) !important; }
+
+/* ---- forms ---- */
+.form-control, .custom-select, .custom-file-label {
+  background-color: var(--c-surface-2);
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+.form-control:focus {
+  background-color: var(--c-surface-2);
+  border-color: var(--c-border-strong);
+  color: var(--c-text);
+  box-shadow: 0 0 0 .2rem rgba(110,168,254,.25);
+}
+.form-control::placeholder { color: var(--c-faint); }
+.input-group-text {
+  background-color: var(--c-surface-3);
+  border-color: var(--c-border);
+  color: var(--c-text-2);
+}
+
+/* ---- links ---- */
+a { color: var(--c-link); }
+a:hover { color: #8fbcff; }
+/* Links Curius renders as body text should stay body text. */
+a.channel, a.tag, a.grey-button, .selected a { color: inherit; }
+
+/* ---- tables / list groups ---- */
+.table { color: var(--c-text); }
+.table td, .table th, .table thead th { border-color: var(--c-border); }
+.table-hover tbody tr:hover { background-color: var(--c-surface-2); color: var(--c-text); }
+.list-group-item {
+  background-color: var(--c-surface);
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+
+/* ---- misc surfaces ---- */
+.modal-backdrop.show { opacity: .7; }
+.close { color: var(--c-text); text-shadow: none; }
+.close:hover { color: #fff; }
+.badge-light { background-color: var(--c-surface-3); color: var(--c-text-2); }
+.img-thumbnail { background-color: var(--c-surface); border-color: var(--c-border); }
+
+/* ---- loading spinner ---- */
+.sk-chase-dot:before { background-color: var(--c-muted) !important; }
+
+/* ---- scrollbars ---- */
+.scroll::-webkit-scrollbar-thumb,
+.disable-scrollbars::-webkit-scrollbar-thumb {
+  background-color: #3a3b42 !important;        /* was #babac0 */
+}
+.scroll::-webkit-scrollbar-track { background-color: var(--c-bg); }
+* { scrollbar-color: #3a3b42 var(--c-bg); }
+
+/* Favicons and thumbnails are usually designed for light grounds;
+   a subtle plate keeps them from floating on the dark surface. */
+img[src*="favicon"], img[src*="icon"] {
+  background-color: var(--c-surface-3);
+  border-radius: 3px;
+}
