@@ -155,6 +155,41 @@ hr, .MuiDivider-root {
   background-color: var(--c-border) !important;
 }
 
+/* ---- generic light-surface catch ----
+   Curius applies some backgrounds from JavaScript at hover time, so they
+   exist in no stylesheet and can't be found by name. Rather than enumerate
+   hashed classes page by page, catch the values themselves: an inline style
+   loses to an !important rule, so this covers hover rows, cards, and
+   anything on pages not yet visited.
+
+   Keep this ABOVE the accent rules below so intentional color wins. */
+[style*="background-color: rgb(255, 255, 255)"],
+[style*="background: rgb(255, 255, 255)"],
+[style*="background-color: rgb(254, 254, 254)"],
+[style*="background-color: rgb(253, 253, 253)"],
+[style*="background-color: rgb(250, 250, 250)"],
+[style*="background-color: rgb(249, 249, 249)"],
+[style*="background-color: rgb(247, 247, 247)"],
+[style*="background-color: rgb(246, 246, 246)"],
+[style*="background-color: rgb(238, 238, 238)"],
+[style*="background-color: #fff"], [style*="background: #fff"],
+[style*="background-color:#fff"], [style*="background:#fff"] {
+  background-color: var(--c-surface-2) !important;
+  color: var(--c-text) !important;
+}
+
+/* Highlight-count badges ("2 highlights"): a 20% yellow wash reads as a
+   marker on white but muddies on dark, so go opaque with dark ink — the
+   same treatment the extension's highlights get. */
+[style*="background-color: rgba(240, 230, 0"],
+[style*="background-color: rgba(255, 230, 0"],
+[style*="background-color: rgba(255, 200, 0"],
+.css-1vntfrs {
+  background-color: var(--c-accent) !important;
+  color: var(--c-accent-ink) !important;
+}
+.css-1vntfrs * { color: var(--c-accent-ink) !important; }
+
 /* ---- emotion classes ----
    These hashes are generated at build time and WILL change when
    Curius redeploys. Everything above is written to survive that;
@@ -170,7 +205,10 @@ hr, .MuiDivider-root {
 .css-qo748n:hover, .css-16ynwg, .css-1r5bxya:hover, .css-6kyp9y,
 .css-6kyp9y:hover, .css-9f18ai:hover, .css-wtkkwm.css-wtkkwm,
 .css-1yvvc7r.css-1yvvc7r, .css-b1z63q, .css-b1z63q:hover,
-.css-186hl23, .css-186hl23:hover {
+.css-186hl23, .css-186hl23:hover,
+/* profile pages */
+.css-uj8wl4, .css-1yrpwh9:hover, .css-w9au3g, .css-eojues:hover,
+.css-1eicj7r:hover, .css-1so9d0e:hover {
   background-color: var(--c-surface-2) !important;
 }
 
@@ -179,7 +217,10 @@ hr, .MuiDivider-root {
 .css-qo748n, .css-1wwxa3g.css-1wwxa3g, .css-1p5qaed, .css-1gwhnlt,
 .css-vq1q7q, .css-1malptz, .css-1esxoxv.css-1esxoxv,
 .css-1vee78u.css-1vee78u, .css-3lj58c, .css-9f18ai, .css-9f18ai:hover,
-.css-mkt8yt:hover, .css-1c56c4w, .css-evk40x {
+.css-mkt8yt:hover, .css-1c56c4w, .css-evk40x,
+/* profile pages */
+.css-uj8wl4, .css-uj8wl4.css-uj8wl4, .css-31jg4i.css-31jg4i:hover,
+.css-eojues, .css-1so9d0e {
   color: var(--c-text) !important;
 }
 .css-9f18ai, .css-9f18ai * { color: var(--c-text-2) !important; }
