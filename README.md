@@ -65,6 +65,39 @@ ground, so:
 Highlights keep bright yellow with near-black ink, preserving the "marker"
 reading from the light theme rather than inverting it.
 
+## The website (curius.app)
+
+`curius-site-dark.user.css` themes the site itself. It is a **Stylus**
+userstyle, not Tampermonkey — the site needed no JS, only CSS with
+`!important` to beat Curius's inline styles.
+
+Install: Stylus → Manage → "Write new style" → paste the file → save.
+(Stylus strips the `@-moz-document` wrapper; Chrome ignores that at-rule in a
+plain `<style>` tag, so don't test it by pasting into DevTools.)
+
+Verified by measuring computed contrast for every text node on the feed and
+bookshelf pages — 0 elements below 3:1.
+
+### When Curius redeploys
+
+The `css-*` selectors near the bottom are emotion class hashes generated at
+build time. They **will** change. Everything above that block matches on
+values Curius writes (inline styles, Bootstrap classes) and should survive.
+
+If a light patch appears after an update, regenerate the list: open
+curius.app, DevTools console, and run
+
+    const light=new Set(), dark=new Set();
+    const lum=c=>{const m=c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+      return m? .299*+m[1]+.587*+m[2]+.114*+m[3] : null;};
+    for(const s of document.styleSheets){try{for(const r of s.cssRules){
+      if(!r.style||!r.selectorText||!/css-/.test(r.selectorText))continue;
+      const bg=r.style.backgroundColor, c=r.style.color;
+      if(bg&&lum(bg)>200) light.add(r.selectorText);
+      if(c&&(c==='black'||lum(c)<90)) dark.add(r.selectorText);
+    }}catch(e){}}
+    console.log([...light].join(','), '\n\n', [...dark].join(','));
+
 ## Caution
 
 The original Chrome-managed extension folder no longer exists on this machine,
