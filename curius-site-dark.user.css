@@ -39,6 +39,14 @@
   --c-accent:     #e6cf00;
   --c-accent-ink: #17180f;
   --c-link:       #6ea8fe;
+
+  /* Row separators. The light theme uses rgb(243,244,246) on white — a
+     1.10:1 hairline that barely registers. Reproducing that ratio exactly
+     on dark gives #222327, but a 1px light-on-dark edge at that contrast
+     disappears; the eye loses faint light-on-dark edges much faster than
+     the reverse. #2c2d31 (1.25:1) keeps the role — a quiet divider that
+     recedes behind the content — while staying visible. */
+  --c-rule:       #2c2d31;
 }
 
 /* ---- ground ---- */
@@ -46,7 +54,13 @@ html, body, .App, #root {
   background: var(--c-bg) !important;
   color: var(--c-text) !important;
 }
-body * { border-color: var(--c-border); }
+/* Row separators are drawn as borders on emotion classes, which outrank an
+   unweighted rule, so this needs !important. Transparent borders are
+   re-asserted below — several components use them purely for layout, and
+   painting those would draw boxes that aren't in the design. */
+* { border-color: var(--c-rule) !important; }
+[style*="border-color: transparent"], [style*="border-color:transparent"],
+[style*="border: none"], [style*="border:none"] { border-color: transparent !important; }
 body, .App, p, span, div, li, td, th, label,
 h1, h2, h3, h4, h5, h6 { color: inherit; }
 
@@ -151,9 +165,30 @@ input, textarea, select,
 
 /* ---- dividers ---- */
 hr, .MuiDivider-root {
-  border-color: var(--c-border) !important;
-  background-color: var(--c-border) !important;
+  border-color: var(--c-rule) !important;
+  background-color: var(--c-rule) !important;
 }
+
+/* ---- row icons ----
+   The type marks left of each bookmark title. Their SVGs carry hardcoded
+   fill="#000" / stroke="#000" attributes, so they stayed black on dark:
+   CSS `color` never reaches them, because SVG paints from fill/stroke.
+   Repaint the attributes directly.
+
+   They sit at secondary rather than full body text so they read clearly
+   without competing with the titles beside them. */
+svg [fill="#000"], svg [fill="black"], svg [fill="#000000"] { fill: var(--c-text-2) !important; }
+svg [stroke="#000"], svg [stroke="black"], svg [stroke="#000000"],
+svg [stroke="#444"] { stroke: var(--c-text-2) !important; }
+
+a:hover svg [fill="#000"], a:hover svg [stroke="#000"] {
+  fill: var(--c-text) !important;
+  stroke: var(--c-text) !important;
+}
+
+/* Font Awesome glyphs are a font, so these do take `color`. */
+.fa, .fab, .fas, .far, [class*="fa-"] { color: var(--c-text-2); }
+a:hover .fa, a:hover .fab, a:hover .fas, a:hover [class*="fa-"] { color: var(--c-text); }
 
 /* ---- generic light-surface catch ----
    Curius applies some backgrounds from JavaScript at hover time, so they
