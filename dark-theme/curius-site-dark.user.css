@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Curius Dark
 @namespace      github.com/pSwaqtch/curius
-@version        1.1.0
+@version        1.1.1
 @description    Dark theme for curius.app, matching the curius dark-theme extension fork.
 @author         krupal
 @homepageURL    https://github.com/pSwaqtch/curius
@@ -159,6 +159,12 @@ input, textarea, select,
   border-color: var(--c-border) !important;
 }
 ::placeholder { color: var(--c-muted) !important; opacity: 1; }
+/* Inputs that set a transparent background but never set a color inherit
+   the browser default black and go invisible on the dark ground. */
+input, textarea, select, [contenteditable="true"] {
+  color: var(--c-text) !important;
+  caret-color: var(--c-text) !important;
+}
 .react-autosuggest__suggestions-container--open {
   background-color: var(--c-surface) !important;
   border: 1px solid var(--c-border) !important;

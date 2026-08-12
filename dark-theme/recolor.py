@@ -89,6 +89,23 @@ PALETTE = [
     ('selfHighlightColor:"#ffff99"', 'selfHighlightColor:"#e6cf00"'),
 ]
 
+# Popup (extension.js) components. Applied to every bundle that contains
+# them, unlike RAW below which is newtab-specific.
+POPUP = [
+    # Title input: transparent background with no color set, so it inherited
+    # the browser default black and stayed black on the dark panel.
+    ("flex: 1;\n  outline: none;\n  border: none;\n  font-family: Source Sans Pro;\n  background-color: transparent;",
+     "flex: 1;\n  outline: none;\n  border: none;\n  font-family: Source Sans Pro;\n  background-color: transparent;\n  color: #e4e4e7;"),
+
+    # "Done" button: pale blue-grey, unmapped.
+    ("background-color: rgb(223, 231, 236);\n  border: none;",
+     "background-color: #2c2d33;\n  color: #e4e4e7;\n  border: none;"),
+
+    # Title field wrapper: white border, and lightgrey on focus/hover.
+    ("border: 1px solid white;", "border: 1px solid #34353b;"),
+    ("border: 1px solid lightgrey;", "border: 1px solid #43444c;"),
+]
+
 # Inline style objects and gradients that CSS cannot override.
 RAW = [
     # Header navbar: white gradient -> dark gradient (keeps the blur effect)
@@ -195,6 +212,14 @@ def retheme(name: str) -> bool:
         else:
             print(f"  WARN [{name}]: no match -> {old.splitlines()[0][:58]}",
                   file=sys.stderr)
+
+    # POPUP components appear in some bundles but not others, so a miss here
+    # is expected rather than a problem worth warning about.
+    for old, new in POPUP:
+        n = js.count(old)
+        if n:
+            js = js.replace(old, new)
+            counts[old.splitlines()[0][:58]] = n
 
     # Body ink in any spacing form.
     js, n = INK_RE.subn(INK, js)

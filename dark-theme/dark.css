@@ -163,6 +163,16 @@ a.channel, a.tag, a.grey-button, .selected a { color: inherit; }
 .badge-light { background-color: var(--c-surface-3); color: var(--c-text-2); }
 .img-thumbnail { background-color: var(--c-surface); border-color: var(--c-border); }
 
+/* ---- inputs: catch-all ----
+   Several styled inputs set a transparent background but never set a color,
+   so they inherit the browser default black and go invisible on the dark
+   panel (the popup's title field did exactly this). Anything that overrides
+   these deliberately is handled above. */
+input, textarea, select, [contenteditable="true"] {
+  color: var(--c-text);
+  caret-color: var(--c-text);
+}
+
 /* ---- Material-UI ----
    The popup's topic picker is a MUI Autocomplete: its dropdown is a MUI
    Paper (white) and its accents come from MUI's default indigo theme, so
