@@ -1,9 +1,13 @@
 /* ==UserStyle==
 @name           Curius Dark
-@namespace      curius-dark
-@version        1.0.0
-@description    Dark theme for curius.app, matching the curius-dark extension fork.
+@namespace      github.com/pSwaqtch/curius
+@version        1.0.1
+@description    Dark theme for curius.app, matching the curius dark-theme extension fork.
 @author         krupal
+@homepageURL    https://github.com/pSwaqtch/curius
+@updateURL      https://raw.githubusercontent.com/pSwaqtch/curius/main/dark-theme/curius-site-dark.user.css
+@supportURL     https://github.com/pSwaqtch/curius/issues
+@license        MIT
 @preprocessor   default
 ==/UserStyle== */
 

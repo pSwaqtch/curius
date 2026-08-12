@@ -30,20 +30,39 @@ names Bootstrap contributes.
 into every website you browse; its tooltips and buttons sit on other people's
 pages, which are mostly light.
 
-## Install
+## Install (per device)
+
+Unpacked extensions cannot sync — Chrome Sync does not carry them, and there
+is no hosted install. Each machine needs the folder locally and loaded by
+hand, once:
+
+    git clone git@github.com:pSwaqtch/curius.git
+    cd curius/dark-theme
+    python3 build.py
+
+Then:
 
 1. `chrome://extensions` → enable Developer mode
 2. Disable the Web Store "Curius" if present
-3. Load unpacked → select `fork/`
+3. Load unpacked → select this directory's `fork/`
 
-The fork has no `key`, so it gets its own extension ID and its own storage.
-Expect to sign in again; your data lives on Curius's servers.
-
-## Iterate
+`build.py` runs everywhere Python does. On macOS/Linux the two underlying
+steps can also be run directly:
 
     python3 recolor.py && ./apply.sh
 
-Then hit reload on the extension card.
+`fork/dist/*.js` and `fork/*.html` are generated and gitignored, which is why
+a fresh clone must build before loading.
+
+The fork has no `key`, so it gets its own extension ID and its own storage.
+Expect to sign in again on each device; your data lives on Curius's servers.
+
+### Updating a device
+
+    git pull && python3 build.py
+
+Then hit reload on the extension card. The extension ID is stable, so
+storage and login survive.
 
 ## Palette
 
@@ -71,7 +90,18 @@ reading from the light theme rather than inverting it.
 userstyle, not Tampermonkey — the site needed no JS, only CSS with
 `!important` to beat Curius's inline styles.
 
-Install: Stylus → Manage → "Write new style" → paste the file → save.
+**Install by URL** so every device stays in sync automatically. In Chrome
+with Stylus installed, open:
+
+https://raw.githubusercontent.com/pSwaqtch/curius/main/dark-theme/curius-site-dark.user.css
+
+Stylus intercepts `.user.css` URLs and offers an install prompt. It then
+re-checks `@updateURL` periodically and pulls any version with a higher
+`@version` — so pushing a change here updates every device.
+
+**Bump `@version` when you edit this file.** Stylus compares versions, not
+content; without a bump, devices keep the old style.
+
 (Stylus strips the `@-moz-document` wrapper; Chrome ignores that at-rule in a
 plain `<style>` tag, so don't test it by pasting into DevTools.)
 
