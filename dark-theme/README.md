@@ -1,121 +1,72 @@
-# curius-dark
+# dark-theme
 
-A dark theme for the Curius Chrome extension, built as an unpacked fork.
+Dark theme for the Curius Chrome extension (an unpacked fork) and for
+curius.app (a Stylus userstyle).
 
-## Why a fork
-
-Editing the installed extension in place doesn't work: Chrome verifies file
-hashes against `_metadata/computed_hashes.json` and disables the extension as
-corrupted. Auto-update would wipe the edits anyway. Loading an unpacked copy
-sidesteps both — no hash verification applies, and nothing auto-updates it.
-
-## Why the bundle is patched instead of overridden with CSS
-
-The UI is built with styled-components (runtime-generated class names) plus
-inline React style objects. External CSS can't reliably target the first and
-can't touch the second at all, so the color literals are rewritten in our own
-copy of the bundle. `dark.css` remains as a thin layer for the real class
-names Bootstrap contributes.
+Install instructions are in the [root README](../README.md).
 
 ## Layout
 
-    fork/            the unpacked extension — load this in Chrome
-    recolor.py       rewrites colors in the JS bundles
-    apply.sh         injects dark.css into the three HTML pages
-    dark.css         CSS layer for stable class names
-    *.js.orig        pristine bundles (the only copies — see below)
-    *.html.orig      pristine pages
+    fork/                      the unpacked extension — load this in Chrome
+    build.py                   recolor + inject; works on any OS
+    recolor.py                 rewrites colors in the JS bundles
+    apply.sh                   injects dark.css into the HTML pages
+    dark.css                   CSS layer for stable class names
+    curius-site-dark.user.css  the website userstyle
+    *.js.orig / *.html.orig    pristine sources
+
+Build with `python3 build.py`, or `python3 recolor.py && ./apply.sh` on
+macOS/Linux. Generated files (`fork/dist/*.js`, `fork/*.html`) are
+gitignored, so a fresh clone must build before loading.
 
 `helper.js` is deliberately **not** themed. It is the content script injected
-into every website you browse; its tooltips and buttons sit on other people's
-pages, which are mostly light.
-
-## Install (per device)
-
-Unpacked extensions cannot sync — Chrome Sync does not carry them, and there
-is no hosted install. Each machine needs the folder locally and loaded by
-hand, once:
-
-    git clone git@github.com:pSwaqtch/curius.git
-    cd curius/dark-theme
-    python3 build.py
-
-Then:
-
-1. `chrome://extensions` → enable Developer mode
-2. Disable the Web Store "Curius" if present
-3. Load unpacked → select this directory's `fork/`
-
-`build.py` runs everywhere Python does. On macOS/Linux the two underlying
-steps can also be run directly:
-
-    python3 recolor.py && ./apply.sh
-
-`fork/dist/*.js` and `fork/*.html` are generated and gitignored, which is why
-a fresh clone must build before loading.
-
-The fork has no `key`, so it gets its own extension ID and its own storage.
-Expect to sign in again on each device; your data lives on Curius's servers.
-
-### Updating a device
-
-    git pull && python3 build.py
-
-Then hit reload on the extension card. The extension ID is stable, so
-storage and login survive.
+into every website you browse; its tooltips sit on other people's pages,
+which are mostly light.
 
 ## Palette
 
-Perceptual match to the stock light theme, not a mathematical inversion.
-Identical contrast ratios don't produce identical perceived weight on a dark
-ground, so:
+Perceptual match to the light theme, not a mathematical inversion — identical
+contrast ratios don't produce identical perceived weight on a dark ground.
 
-| Role      | Value     | Note                                        |
-|-----------|-----------|---------------------------------------------|
-| ground    | `#1a1b1e` |                                             |
-| surface   | `#212226` | cards, bars                                 |
-| raised    | `#25262b` | hover                                       |
-| pressed   | `#2c2d33` | tags                                        |
-| primary   | `#e4e4e7` | not pure white — white blooms on dark        |
-| secondary | `#b4b4bc` |                                             |
-| muted     | `#8b8b93` | lifted; grey sinks into dark faster         |
-| accent    | `#e6cf00` | was `#ffe600`; hue held, luminance dropped  |
+| Role      | Value     | Note                                       |
+|-----------|-----------|--------------------------------------------|
+| ground    | `#1a1b1e` |                                            |
+| surface   | `#212226` | cards, bars                                |
+| raised    | `#25262b` | hover                                      |
+| pressed   | `#2c2d33` | tags                                       |
+| rule      | `#2c2d31` | separators; 1.25:1, above the strict match |
+| primary   | `#e4e4e7` | not pure white — white blooms on dark      |
+| secondary | `#b4b4bc` |                                            |
+| muted     | `#8b8b93` | lifted; grey sinks into dark faster        |
+| accent    | `#e6cf00` | was `#ffe600`; hue held, luminance dropped |
 
 Highlights keep bright yellow with near-black ink, preserving the "marker"
-reading from the light theme rather than inverting it.
+reading rather than inverting it.
 
-## The website (curius.app)
+Site theme verified by measuring computed contrast for every text node on the
+feed and bookshelf pages: 0 elements below 3:1.
 
-`curius-site-dark.user.css` themes the site itself. It is a **Stylus**
-userstyle, not Tampermonkey — the site needed no JS, only CSS with
-`!important` to beat Curius's inline styles.
+## Editing
 
-**Install by URL** so every device stays in sync automatically. In Chrome
-with Stylus installed, open:
+**Colors in the extension** live in `recolor.py` (bundle substitutions) and
+`dark.css` (Bootstrap and Material-UI class names). Run `build.py`, reload the
+card.
 
-https://raw.githubusercontent.com/pSwaqtch/curius/main/dark-theme/curius-site-dark.user.css
+**Colors on the site** live in `curius-site-dark.user.css`. Bump `@version`
+and push, or other devices keep the old style.
 
-Stylus intercepts `.user.css` URLs and offers an install prompt. It then
-re-checks `@updateURL` periodically and pulls any version with a higher
-`@version` — so pushing a change here updates every device.
+Stylus strips the `@-moz-document` wrapper. Chrome ignores that at-rule in a
+plain `<style>` tag, so don't test the file by pasting it into DevTools.
 
-**Bump `@version` when you edit this file.** Stylus compares versions, not
-content; without a bump, devices keep the old style.
+## When Curius redeploys
 
-(Stylus strips the `@-moz-document` wrapper; Chrome ignores that at-rule in a
-plain `<style>` tag, so don't test it by pasting into DevTools.)
+The `css-*` selectors near the bottom of the userstyle are emotion class
+hashes generated at build time. They **will** change. Everything above that
+block matches on values Curius writes (inline styles, Bootstrap and `Mui*`
+class names, SVG attributes) and should survive.
 
-Verified by measuring computed contrast for every text node on the feed and
-bookshelf pages — 0 elements below 3:1.
-
-### When Curius redeploys
-
-The `css-*` selectors near the bottom are emotion class hashes generated at
-build time. They **will** change. Everything above that block matches on
-values Curius writes (inline styles, Bootstrap classes) and should survive.
-
-If a light patch appears after an update, regenerate the list: open
-curius.app, DevTools console, and run
+If a light patch appears after an update, regenerate the list from the
+curius.app DevTools console:
 
     const light=new Set(), dark=new Set();
     const lum=c=>{const m=c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
@@ -128,8 +79,12 @@ curius.app, DevTools console, and run
     }}catch(e){}}
     console.log([...light].join(','), '\n\n', [...dark].join(','));
 
+For the extension, a Curius release won't touch the fork (it doesn't
+auto-update), but you also won't get their fixes until you re-fork.
+
 ## Caution
 
-The original Chrome-managed extension folder no longer exists on this machine,
-so the `*.orig` files here are the only pristine copies. To re-fork from a
-newer Curius release, reinstall from the Web Store first and re-copy.
+The original Chrome-managed extension folder no longer exists, so the
+`*.orig` files and `fork/`'s vendored assets are the only copies. To re-fork
+from a newer Curius release, install it from the Web Store first, then
+re-copy.
