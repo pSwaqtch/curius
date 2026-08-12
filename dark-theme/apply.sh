@@ -23,11 +23,12 @@ for page in "${PAGES[@]}"; do
   target="$HERE/fork/$page.html"
   pristine="$HERE/$page.html.orig"
 
-  [[ -f "$target" ]] || { echo "error: $target not found" >&2; exit 1; }
-
-  # Always start from the pristine file so repeated runs can't accumulate
-  # whitespace or leave partial injections behind.
-  [[ -f "$pristine" ]] && cp "$pristine" "$target"
+  # Always write from the pristine source: repeated runs can't accumulate
+  # whitespace, and a fresh clone (where fork/*.html is gitignored and
+  # therefore absent) still builds.
+  [[ -f "$pristine" ]] || { echo "error: $pristine not found" >&2; exit 1; }
+  mkdir -p "$(dirname "$target")"
+  cp "$pristine" "$target"
 
   if [[ "${1:-}" == "--revert" ]]; then
     echo "reverted $page.html"

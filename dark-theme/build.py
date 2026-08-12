@@ -31,15 +31,15 @@ def inject(revert: bool) -> bool:
         target = HERE / "fork" / f"{page}.html"
         pristine = HERE / f"{page}.html.orig"
 
-        if not target.exists():
-            print(f"error: {target} not found", file=sys.stderr)
+        # Always write from the pristine source: repeated runs can't
+        # accumulate whitespace, and a fresh clone (where fork/*.html is
+        # gitignored and therefore absent) still builds.
+        if not pristine.exists():
+            print(f"error: {pristine} not found", file=sys.stderr)
             return False
-
-        # Always start from the pristine file so repeated runs can't
-        # accumulate whitespace or leave partial injections behind.
-        if pristine.exists():
-            target.write_text(pristine.read_text(encoding="utf-8"),
-                              encoding="utf-8")
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(pristine.read_text(encoding="utf-8"),
+                          encoding="utf-8")
 
         if revert:
             print(f"  reverted {page}.html")
