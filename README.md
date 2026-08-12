@@ -35,6 +35,10 @@ so expect to sign in again per device; your data lives on Curius's servers.
 
 Unpacked extensions can't sync — Chrome Sync doesn't carry them.
 
+Every build also checks whether the Chrome Web Store has a newer Curius than
+the fork, since the fork never auto-updates and would otherwise drift behind
+silently. See `dark-theme/README.md` for how to re-fork.
+
 ## explorer
 
     cd explorer && npm install && npm run dev

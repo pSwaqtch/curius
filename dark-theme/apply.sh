@@ -57,3 +57,8 @@ fi
 
 echo
 echo "Done. Reload Curius (dark) at chrome://extensions."
+
+# Reuse build.py's upstream check so both entry points warn identically.
+# Never fatal: a missing python3 or no network must not fail the build.
+echo
+python3 -c "import sys; sys.path.insert(0, '$HERE'); import build; build.check_upstream()" 2>/dev/null || true

@@ -82,9 +82,33 @@ curius.app DevTools console:
 For the extension, a Curius release won't touch the fork (it doesn't
 auto-update), but you also won't get their fixes until you re-fork.
 
+## Staying current with upstream
+
+The fork never auto-updates, so it drifts behind Curius silently. Every
+build checks the Chrome Web Store and says which side is newer:
+
+    fork is current with Curius 0.2.8.45
+
+It degrades quietly when offline and never fails a build. Skip it with
+`--no-check`.
+
+### Re-forking a newer release
+
+1. Install Curius from the Web Store, open a new tab so it fully unpacks
+2. Copy its version folder over `fork/` — on macOS it lives under
+   `~/Library/Application Support/Google/Chrome/<Profile>/Extensions/fbpnbdifockifjiimogdjndhpmmfgjkl/`
+3. Delete `fork/_metadata/`, and the `"key"` and `"update_url"` entries from
+   `fork/manifest.json` (keeping `key` would collide with the store copy)
+4. Refresh the pristine sources:
+   `cp fork/dist/{newtab,extension,options}.js .` and the three
+   `fork/*.html` to `*.html.orig`
+5. `python3 build.py`, then reload the card
+
+Expect `recolor.py` to emit WARNs if Curius restructured their CSS — each
+one is a substitution that no longer matches and needs re-deriving.
+
 ## Caution
 
 The original Chrome-managed extension folder no longer exists, so the
-`*.orig` files and `fork/`'s vendored assets are the only copies. To re-fork
-from a newer Curius release, install it from the Web Store first, then
-re-copy.
+`*.orig` files and `fork/`'s vendored assets are the only copies. Don't
+delete them without a Web Store install to re-copy from.
