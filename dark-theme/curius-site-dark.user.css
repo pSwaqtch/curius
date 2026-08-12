@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Curius Dark
 @namespace      github.com/pSwaqtch/curius
-@version        1.0.1
+@version        1.1.0
 @description    Dark theme for curius.app, matching the curius dark-theme extension fork.
 @author         krupal
 @homepageURL    https://github.com/pSwaqtch/curius
@@ -171,6 +171,63 @@ input, textarea, select,
 hr, .MuiDivider-root {
   border-color: var(--c-rule) !important;
   background-color: var(--c-rule) !important;
+}
+
+/* ---- Material-UI ----
+   Dropdowns render as MUI Paper (white) and accents come from MUI's default
+   indigo theme, so neither the value-matching rules above nor Bootstrap
+   reach them. MUI class names are stable, unlike emotion's hashes. */
+.MuiPaper-root, .MuiAutocomplete-paper, .MuiAutocomplete-listbox,
+.MuiPopover-paper, .MuiMenu-paper, .MuiDialog-paper {
+  background-color: var(--c-surface) !important;
+  color: var(--c-text) !important;
+}
+.MuiAutocomplete-option, .MuiMenuItem-root, .MuiListItem-root {
+  color: var(--c-text) !important;
+}
+.MuiAutocomplete-option:hover, .MuiMenuItem-root:hover,
+.MuiAutocomplete-option[data-focus="true"],
+.MuiAutocomplete-option[aria-selected="true"] {
+  background-color: var(--c-surface-2) !important;
+}
+
+.MuiInputBase-root, .MuiInputBase-input, .MuiFormControl-root {
+  color: var(--c-text) !important;
+}
+.MuiInput-underline:before,
+.MuiInput-underline:hover:not(.Mui-disabled):before {
+  border-bottom-color: var(--c-border) !important;
+}
+.MuiInput-underline:after { border-bottom-color: var(--c-accent) !important; }
+
+.MuiFormLabel-root, .MuiInputLabel-root { color: var(--c-muted) !important; }
+.MuiFormLabel-root.Mui-focused, .MuiInputLabel-root.Mui-focused {
+  color: var(--c-accent) !important;
+}
+
+.MuiIconButton-root, .MuiAutocomplete-popupIndicator,
+.MuiAutocomplete-clearIndicator, .MuiSvgIcon-root {
+  color: var(--c-text-2) !important;
+}
+.MuiChip-root {
+  background-color: var(--c-surface-3) !important;
+  color: var(--c-text) !important;
+}
+.MuiChip-deleteIcon { color: var(--c-muted) !important; }
+
+/* ---- react-mentions (note / comment fields) ---- */
+[class*="__suggestions"] {
+  background-color: var(--c-surface) !important;
+  color: var(--c-text) !important;
+  border: 1px solid var(--c-border) !important;
+}
+[class*="__suggestions__item"] { color: var(--c-text) !important; }
+[class*="__suggestions__item--focused"] {
+  background-color: var(--c-surface-2) !important;
+}
+[class*="__highlighter"] strong {
+  background-color: var(--c-surface-3) !important;
+  color: var(--c-text) !important;
 }
 
 /* ---- row icons ----

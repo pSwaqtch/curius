@@ -163,6 +163,69 @@ a.channel, a.tag, a.grey-button, .selected a { color: inherit; }
 .badge-light { background-color: var(--c-surface-3); color: var(--c-text-2); }
 .img-thumbnail { background-color: var(--c-surface); border-color: var(--c-border); }
 
+/* ---- Material-UI ----
+   The popup's topic picker is a MUI Autocomplete: its dropdown is a MUI
+   Paper (white) and its accents come from MUI's default indigo theme, so
+   neither the bundle recolor nor the Bootstrap rules above reach it.
+   MUI class names are stable, unlike emotion's hashes. */
+.MuiPaper-root, .MuiAutocomplete-paper, .MuiAutocomplete-listbox,
+.MuiPopover-paper, .MuiMenu-paper, .MuiDialog-paper {
+  background-color: var(--c-surface) !important;
+  color: var(--c-text) !important;
+}
+.MuiAutocomplete-option, .MuiMenuItem-root, .MuiListItem-root {
+  color: var(--c-text) !important;
+}
+.MuiAutocomplete-option:hover, .MuiMenuItem-root:hover,
+.MuiAutocomplete-option[data-focus="true"],
+.MuiAutocomplete-option[aria-selected="true"] {
+  background-color: var(--c-surface-2) !important;
+}
+
+/* Inputs. MUI's "standard" variant draws an underline that goes indigo on
+   focus; Curius's accent is the yellow, so use that instead of MUI's blue. */
+.MuiInputBase-root, .MuiInputBase-input, .MuiFormControl-root {
+  color: var(--c-text) !important;
+}
+.MuiInput-underline:before,
+.MuiInput-underline:hover:not(.Mui-disabled):before {
+  border-bottom-color: var(--c-border) !important;
+}
+.MuiInput-underline:after { border-bottom-color: var(--c-accent) !important; }
+
+/* Labels — "+ Add or select topics..." renders as a MUI label, which
+   inherits the indigo primary when focused. */
+.MuiFormLabel-root, .MuiInputLabel-root { color: var(--c-muted) !important; }
+.MuiFormLabel-root.Mui-focused, .MuiInputLabel-root.Mui-focused {
+  color: var(--c-accent) !important;
+}
+
+.MuiIconButton-root, .MuiAutocomplete-popupIndicator,
+.MuiAutocomplete-clearIndicator, .MuiSvgIcon-root {
+  color: var(--c-text-2) !important;
+}
+.MuiChip-root {
+  background-color: var(--c-surface-3) !important;
+  color: var(--c-text) !important;
+}
+.MuiChip-deleteIcon { color: var(--c-muted) !important; }
+.MuiDivider-root { background-color: var(--c-border) !important; }
+
+/* ---- react-mentions (note / comment field) ---- */
+.mentions__suggestions, [class*="__suggestions"] {
+  background-color: var(--c-surface) !important;
+  color: var(--c-text) !important;
+  border: 1px solid var(--c-border) !important;
+}
+[class*="__suggestions__item"] { color: var(--c-text) !important; }
+[class*="__suggestions__item--focused"] {
+  background-color: var(--c-surface-2) !important;
+}
+[class*="__highlighter"] strong {
+  background-color: var(--c-surface-3) !important;
+  color: var(--c-text) !important;
+}
+
 /* ---- loading spinner ---- */
 .sk-chase-dot:before { background-color: var(--c-muted) !important; }
 
