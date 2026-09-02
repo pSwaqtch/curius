@@ -35,6 +35,12 @@ so expect to sign in again per device; your data lives on Curius's servers.
 
 Unpacked extensions can't sync — Chrome Sync doesn't carry them.
 
+**This repo has to stay public for the userstyle to sync.** Stylus fetches
+`@updateURL` anonymously, and `raw.githubusercontent.com` answers 404 — not
+403 — for a private repo, so installing appears to do nothing and updates
+silently never arrive. If it must go private, drop the URL install and paste
+the file into Stylus on each device instead.
+
 Every build also checks whether the Chrome Web Store has a newer Curius than
 the fork, since the fork never auto-updates and would otherwise drift behind
 silently. See `dark-theme/README.md` for how to re-fork.

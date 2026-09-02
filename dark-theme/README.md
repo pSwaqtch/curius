@@ -44,13 +44,26 @@ Highlights keep bright yellow with near-black ink, preserving the "marker"
 reading rather than inverting it.
 
 Site theme verified by measuring computed contrast for every text node on the
-feed and bookshelf pages: 0 elements below 3:1.
+feed, bookshelf and profile pages, and inside the search overlay: 0 elements
+below 3:1. Avatar initials are excluded — they sit on per-user identity
+colours that are meant to stay coloured.
 
 ## Editing
 
 **Colors in the extension** live in `recolor.py` (bundle substitutions) and
 `dark.css` (Bootstrap and Material-UI class names). Run `build.py`, reload the
 card.
+
+Two traps when adding substitutions:
+
+- Most styled-components use **real newlines**, but a few are inside JS string
+  literals where the newlines are the two characters `\` and `n`. A pattern
+  with the wrong kind silently doesn't match.
+- `recolor.py` prints a WARN for every pattern that found nothing. Read them —
+  that is the only signal a substitution has gone stale.
+
+Anything MUI or Bootstrap is better fixed in `dark.css`: those class names are
+stable, while emotion's are build hashes.
 
 **Colors on the site** live in `curius-site-dark.user.css`. Bump `@version`
 and push, or other devices keep the old style.
@@ -99,9 +112,13 @@ It degrades quietly when offline and never fails a build. Skip it with
    `~/Library/Application Support/Google/Chrome/<Profile>/Extensions/fbpnbdifockifjiimogdjndhpmmfgjkl/`
 3. Delete `fork/_metadata/`, and the `"key"` and `"update_url"` entries from
    `fork/manifest.json` (keeping `key` would collide with the store copy)
-4. Refresh the pristine sources:
-   `cp fork/dist/{newtab,extension,options}.js .` and the three
-   `fork/*.html` to `*.html.orig`
+4. Refresh the pristine sources (they must gain the `.orig` suffix, or the
+   build silently rewrites the old bundles):
+
+       for n in newtab extension options; do
+         cp "fork/dist/$n.js" "$n.js.orig"
+         cp "fork/$n.html"    "$n.html.orig"
+       done
 5. `python3 build.py`, then reload the card
 
 Expect `recolor.py` to emit WARNs if Curius restructured their CSS — each

@@ -13,3 +13,7 @@ fork/options.html
 
 # Pre-compressed duplicates of files already tracked uncompressed.
 fork/dist/**/*.gz
+
+# Bytecode from apply.sh importing build.py for the version check.
+__pycache__/
+*.pyc
