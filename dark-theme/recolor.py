@@ -121,6 +121,18 @@ OVERLAY = [
     # Loading spinner row.
     ("padding: 10px;\n  color: #a5a5a5;", "padding: 10px;\n  color: #8b8b93;"),
 
+    # Result title: "black" when recent, Notion grey otherwise. The grey is
+    # readable body text on white but sinks to muted on dark; both are
+    # titles, so both go to primary.
+    ('color: ${e=>e.isRecent?"black":"rgba(55, 53, 47, 0.65)"};',
+     'color: ${e=>e.isRecent?"#e4e4e7":"#e4e4e7"};'),
+
+    # Snippet row, and the <mark> wrapping the matched search term inside it.
+    ("color: rgb(170, 170, 170);\n  white-space: nowrap;",
+     "color: #b4b4bc;\n  white-space: nowrap;"),
+    ("& mark {\n    color: black;\n    font-weight: 400;\n  }",
+     "& mark {\n    background-color: #e6cf00;\n    color: #17180f;\n    font-weight: 400;\n  }"),
+
     # Search input: goes white on focus, which is the white box behind the
     # dropdown. Keep the raised-surface treatment instead.
     # NOTE: this block lives inside a JS string literal, so its newlines are

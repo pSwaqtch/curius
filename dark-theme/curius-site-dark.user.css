@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Curius Dark
 @namespace      github.com/pSwaqtch/curius
-@version        1.1.1
+@version        1.2.1
 @description    Dark theme for curius.app, matching the curius dark-theme extension fork.
 @author         krupal
 @homepageURL    https://github.com/pSwaqtch/curius
@@ -171,6 +171,50 @@ input, textarea, select, [contenteditable="true"] {
 }
 .react-autosuggest__suggestion--highlighted {
   background-color: var(--c-surface-3) !important;
+}
+
+/* ---- search overlay ----
+   The bookmark-search dropdown: a white panel with dark rows. Its colors
+   are the same literals the extension bundle uses, so the same reasoning
+   applies. The css-* hashes will change on redeploy; the z-index and
+   uppercase-label matches are the durable half. */
+.css-1v371lj,
+div[class*="css-"][style*="z-index: 100"] {
+  background-color: var(--c-surface) !important;
+  color: var(--c-text) !important;
+  border: 1px solid var(--c-border) !important;
+  border-radius: 7px !important;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 12px 12px !important;
+}
+
+/* Section labels: MY LINKS / FROM CURIUS / RECENTLY SAVED */
+.css-14jft1, [style*="text-transform: uppercase"] {
+  color: var(--c-muted) !important;
+  border-bottom-color: var(--c-border) !important;
+}
+
+/* Result rows and their titles. rgba(55,53,47,.65) is readable body text on
+   white but sinks to muted on dark, so titles go to primary. */
+.css-b35w2m, .css-plwatf { color: var(--c-text) !important; }
+
+/* Hovered row and other light hover surfaces. */
+.css-ydmq9v:hover, .css-kf0zzs, .css-kf0zzs:hover, .css-qo748n:hover,
+.css-1r5bxya:hover, .css-6kyp9y, .css-6kyp9y:hover, .css-9f18ai:hover,
+.css-9qemg3:hover, .css-1jp2oqo:hover, .css-1rg4s99, .css-16ynwg,
+.css-3lj58c, .css-w9au3g {
+  background-color: var(--c-surface-2) !important;
+  color: var(--c-text) !important;
+}
+.css-10wrm4j, .css-10wrm4j:hover, .css-1gwhnlt, .css-vq1q7q,
+.css-9f18ai, .css-9f18ai:hover, .css-mkt8yt:hover {
+  color: var(--c-text) !important;
+}
+
+/* The search term is wrapped in <mark>, styled for a white row. Keep it a
+   bright marker with dark ink rather than inverting it. */
+mark, .css-1b0hd62 mark {
+  background-color: var(--c-accent) !important;
+  color: var(--c-accent-ink) !important;
 }
 
 /* ---- dividers ---- */
