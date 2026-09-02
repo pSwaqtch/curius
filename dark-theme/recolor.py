@@ -106,6 +106,31 @@ POPUP = [
     ("border: 1px solid lightgrey;", "border: 1px solid #43444c;"),
 ]
 
+# Search overlay on the new tab. The dropdown panel, its section labels and
+# the input's focus state are all styled-components with light values.
+OVERLAY = [
+    # Dropdown panel.
+    ("position: absolute;\n  width: 100%;\n  background-color: white;\n  z-index: 100;\n  box-shadow: rgb(0 0 0 / 20%) 0px 12px 12px;",
+     "position: absolute;\n  width: 100%;\n  background-color: #212226;\n  color: #e4e4e7;\n  z-index: 100;\n  box-shadow: rgb(0 0 0 / 50%) 0px 12px 12px;\n  border: 1px solid #34353b;\n  border-radius: 7px;"),
+
+    # "FROM CURIUS" / "RECENTLY SAVED" section labels.
+    ("color: rgba(55, 53, 47, 0.65);", "color: #8b8b93;"),
+    ("border-bottom: 1px solid rgba(243, 244, 246);",
+     "border-bottom: 1px solid #34353b;"),
+
+    # Loading spinner row.
+    ("padding: 10px;\n  color: #a5a5a5;", "padding: 10px;\n  color: #8b8b93;"),
+
+    # Search input: goes white on focus, which is the white box behind the
+    # dropdown. Keep the raised-surface treatment instead.
+    # NOTE: this block lives inside a JS string literal, so its newlines are
+    # the two characters \ and n -- not real newlines like the templates above.
+    ("&:focus {\\n      outline: 3px solid #f9f9f9;\\n      border: 1px solid #ddd;\\n      background-color: white;\\n    }",
+     "&:focus {\\n      outline: none;\\n      border: 1px solid #43444c;\\n      background-color: #25262b;\\n    }"),
+    ("&:hover {\\n      border: 1px solid #ddd;\\n    }",
+     "&:hover {\\n      border: 1px solid #43444c;\\n    }"),
+]
+
 # Inline style objects and gradients that CSS cannot override.
 RAW = [
     # Header navbar: white gradient -> dark gradient (keeps the blur effect)
@@ -215,7 +240,7 @@ def retheme(name: str) -> bool:
 
     # POPUP components appear in some bundles but not others, so a miss here
     # is expected rather than a problem worth warning about.
-    for old, new in POPUP:
+    for old, new in POPUP + OVERLAY:
         n = js.count(old)
         if n:
             js = js.replace(old, new)

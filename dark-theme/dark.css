@@ -163,6 +163,15 @@ a.channel, a.tag, a.grey-button, .selected a { color: inherit; }
 .badge-light { background-color: var(--c-surface-3); color: var(--c-text-2); }
 .img-thumbnail { background-color: var(--c-surface); border-color: var(--c-border); }
 
+/* ---- search overlay ----
+   The new-tab search dropdown is a styled-component panel; its own colors
+   are patched in recolor.py. This covers the result rows rendered inside
+   it, which pick up muted greys meant for a white panel. */
+mark, .mark {
+  background-color: var(--c-accent) !important;
+  color: var(--c-accent-ink) !important;
+}
+
 /* ---- inputs: catch-all ----
    Several styled inputs set a transparent background but never set a color,
    so they inherit the browser default black and go invisible on the dark
